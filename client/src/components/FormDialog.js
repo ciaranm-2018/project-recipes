@@ -4,12 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
 function FormDialog (props) {
+  console.log ('form dialog dat', props.data);
   return (
     <div>
       <Dialog
@@ -22,7 +21,7 @@ function FormDialog (props) {
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <TextField
-              error= {props.error.recipeName}
+                error={props.error.recipeName}
                 autoFocus
                 margin="dense"
                 variant="outlined"
@@ -30,36 +29,39 @@ function FormDialog (props) {
                 label="Recipe Name"
                 type="text"
                 fullWidth
+                value={props.data.recipeName}
                 onChange={props.handleChange ('recipeName')}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-              error= {props.error.description}
+                error={props.error.description}
                 margin="dense"
                 id="name"
                 variant="outlined"
                 label="Description"
                 type="text"
                 fullWidth
+                value={props.data.description}
                 onChange={props.handleChange ('description')}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-              error= {props.error.ingredients}
+                error={props.error.ingredients}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Ingredients (comma separated)"
                 type="text"
                 fullWidth
+                value={props.data.ingredients}
                 onChange={props.handleChange ('ingredients')}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-              error= {props.error.instructions}
+                error={props.error.instructions}
                 multiline
                 rowsMax="4"
                 margin="dense"
@@ -68,78 +70,85 @@ function FormDialog (props) {
                 label="Instructions"
                 type="text"
                 fullWidth
+                value={props.data.instructions}
                 onChange={props.handleChange ('instructions')}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-              error= {props.error.prepTime}
+                error={props.error.prepTime}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Prep Time (Minutes)"
                 type="text"
+                value={props.data.prepTime}
                 onChange={props.handleChange ('prepTime')}
                 fullWidth
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-              error= {props.error.cookTime}
+                error={props.error.cookTime}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Cook Time (HH:MM)"
                 type="text"
+                value={props.data.cookTime}
                 onChange={props.handleChange ('cookTime')}
                 fullWidth
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-              error= {props.error.totalTime}
+                error={props.error.totalTime}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Total Time (HH:MM)"
                 type="text"
+                value={props.data.totalTime}
                 onChange={props.handleChange ('totalTime')}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-              error= {props.error.yield}
+                error={props.error.yield}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Yield (Servings)"
                 type="text"
                 fullWidth
+                value={props.data.yield}
                 onChange={props.handleChange ('yield')}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                error= {props.error.calories}
+                error={props.error.calories}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Calories"
                 type="text"
                 fullWidth
+                value={props.data.calories}
                 onChange={props.handleChange ('calories')}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                error= {props.error.fat}
+                error={props.error.fat}
                 margin="dense"
                 variant="outlined"
                 id="name"
                 label="Fat"
                 type="text"
                 fullWidth
+                value={props.data.fat}
                 onChange={props.handleChange ('fat')}
               />
             </Grid>
@@ -150,9 +159,14 @@ function FormDialog (props) {
           <Button onClick={props.handleClose} color="primary">
             Close
           </Button>
-          <Button onClick={props.handleSave} color="primary">
-            Save
-          </Button>
+          {props.data.id
+            ? <Button onClick={props.handleUpdate} color="primary">
+                Update
+              </Button>
+            : <Button onClick={props.handleSave} color="primary">
+                Save
+              </Button>}
+
         </DialogActions>
       </Dialog>
     </div>
