@@ -1,11 +1,7 @@
-#!flask/bin/python
-from flask import Flask, jsonify
-from flask import abort
-from routes import *
+import os
+from flask import Flask, jsonify, abort
 from flask_cors import CORS
-#from pymongo import MongoClient
-# import mongoConfig as db
-
+from routes import *
 
 
 app = Flask(__name__)
@@ -17,5 +13,6 @@ app.register_blueprint(routes)
 def index():
     return "Hello, World!"
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8081)))
