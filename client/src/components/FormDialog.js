@@ -5,10 +5,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 
+import {mealType, countries} from './constant'
+
 function FormDialog (props) {
-  console.log ('form dialog dat', props.data);
+
   return (
     <div>
       <Dialog
@@ -151,6 +154,48 @@ function FormDialog (props) {
                 value={props.data.fat}
                 onChange={props.handleChange ('fat')}
               />
+            </Grid>
+            <Grid item xs={6}>
+
+              <TextField
+                error={props.error.country}
+                select
+                margin="dense"
+                variant="outlined"
+                id="country"
+                label="country of origin"
+       
+                fullWidth
+                value={props.data.country}
+                onChange={props.handleChange ('country')}
+              >
+                {countries.map (option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                error={props.error.mealType}
+                select
+                margin="dense"
+                variant="outlined"
+                id="mealType"
+                label="Type of meal"
+       
+                fullWidth
+                value={props.data.mealType}
+                onChange={props.handleChange ('mealType')}
+              >
+                {mealType.map (option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
             </Grid>
           </Grid>
 
