@@ -19,9 +19,9 @@ def initialize():
     #sample data for initialize DB
     matrics = {'views':0,'likes':0,'dislikes':0}
     data = {
-        "totalTime" : "sample","description" : "sample","ingredients" : "sample","calories" : "sample","yield" : "sample",
-        "fat" : "sample","cookTime" : "sample","recipeName" : "sample","prepTime" : "sample","instructions" : "sample","inserted_date":datetime.datetime.utcnow(),
-        "metrics" : {"views":0,"upVotes":0,"downVotes":0}
+        "totalTime" : "10min","description" : "traditional meal","ingredients" : "beans dahl","calories" : "100","yield" : "5",
+        "fat" : "200","cookTime" : "30min","recipeName" : "irish","prepTime" : "20min","instructions" : "start the cooking","inserted_date":datetime.datetime.utcnow(),
+        "metrics" : {"views":0,"upVotes":0,"downVotes":0}, "country":"ireland","mealType":"supper"
     }
 
     recipe.insert(data)
@@ -94,6 +94,8 @@ def getRecepe(recepe_id):
             json_data["yield"] =data["yield"]
             json_data["prepTime"] = data["prepTime"]
             json_data["instructions"] = data["instructions"]
+            json_data["country"] =data["country"]
+            json_data["mealType"] =data["mealType"]
 
             db.recipe.update(
                 {"_id":ObjectId(recepe_id)},
@@ -134,7 +136,9 @@ def updateRecepe():
             data["totalTime"] = req_data["totalTime"]
             data["yield"] = req_data["yield"]
             data["prepTime"] = req_data["prepTime"] 
-            data["instructions"] = req_data["instructions"] 
+            data["instructions"] = req_data["instructions"]
+            data["country"] =req_data["country"]
+            data["mealType"] =req_data["mealType"] 
 
             insertedrecod = db.recipe.save(data)
             json_data = {}
