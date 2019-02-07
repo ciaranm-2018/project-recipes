@@ -1,72 +1,131 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import {Chart} from 'react-google-charts';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
+
+const baseURL = 'https://project-recipes-ciaranm.c9users.io:8081';
 
 const styles = {
   root: {
-    width: '100%',
-    overflowX: 'auto',
+    flexGrow: 1,
   },
   table: {
     minWidth: 700,
   },
+  card: {
+    padding: '10px 10px 10px 10px',
+  },
 };
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
+class Category extends React.Component {
+  state = {
+    countryBreakDown:[["",""]],
+    mostViewedRecipes:[["",""]],
+    mealTypeBreakDown:[["",""]],
+    
+    
+    
+  };
 
-const data = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+  countryBreakDown = () => {
+    axios
+      .get (`${baseURL}/api/statpie/country/`)
+      .then (response => {
+        this.setState ({countryBreakDown: response.data});
+      })
+      .catch (error => console.log (error));
+  };
 
-function Category(props) {
-  const { classes } = props;
+  mostViewedRecipes = () => {
+    axios
+      .get (`${baseURL}/api/stattable/view/`)
+      .then (response => {
+        this.setState ({mostViewedRecipes: response.data});
+      })
+      .catch (error => console.log (error));
+  };
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Category</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat (g)</TableCell>
-            <TableCell align="right">Carbs (g)</TableCell>
-            <TableCell align="right">Protein (g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(n => (
-            <TableRow key={n.id}>
-              <TableCell component="th" scope="row">
-                {n.name}
-              </TableCell>
-              <TableCell align="right">{n.calories}</TableCell>
-              <TableCell align="right">{n.fat}</TableCell>
-              <TableCell align="right">{n.carbs}</TableCell>
-              <TableCell align="right">{n.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+  mealTypeBreakDown = () => {
+    axios
+      .get (`${baseURL}/api/statpie/mealtype/`)
+      .then (response => {
+        this.setState ({mealTypeBreakDown: response.data});
+      })
+      .catch (error => console.log (error));
+  };
+
+  componentDidMount () {
+    this.countryBreakDown ();
+    this.mealTypeBreakDown ();
+    this.mostViewedRecipes();
+  }
+
+  render () {
+    const {classes} = this.props;
+    const {countryBreakDown, mealTypeBreakDown, mostViewedRecipes} = this.state;
+    return (
+      <div>
+        <Grid container spacing={24} className={classes.root}>
+          <Grid item>
+            <Paper className={classes.card}>
+              <Chart
+                width={'500px'}
+                height={'300px'}
+                chartType="PieChart"
+                loader={<CircularProgress className={classes.progress} />}
+                data={countryBreakDown}
+                options={{
+                  title: 'Country wise breakdown',
+                }}
+                rootProps={{'data-testid': '1'}}
+              />
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper className={classes.card}>
+              <Chart
+                width={'500px'}
+                height={'300px'}
+                chartType="PieChart"
+                loader={<CircularProgress className={classes.progress} />}
+                data={mealTypeBreakDown}
+                options={{
+                  title: 'Meal wise breakdown',
+                }}
+                rootProps={{'data-testid': '2'}}
+              />
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper className={classes.card}>
+              <Chart
+                width={'500px'}
+                height={'300px'}
+                chartType="Bar"
+                loader={<CircularProgress className={classes.progress} />}
+                data={mostViewedRecipes}
+                options={{
+                  chart: {
+                    title: 'Most viewed recipes',
+                  },
+                }}
+                rootProps={{'data-testid': '3'}}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+
+      </div>
+    );
+  }
 }
 
 Category.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Category);
+export default withStyles (styles) (Category);

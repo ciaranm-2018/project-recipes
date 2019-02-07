@@ -36,7 +36,7 @@ ListItemLink1.propTypes = {
 
 export const mainListItems = (
   <div>
-    <ListItemLink1 to="/gallery" primary="Gallery" icon={<DashboardIcon />} />
-    <ListItemLink1 to="/category" primary="Category" icon={<BarChartIcon />} />
+    <ListItemLink1 to="/app/gallery" primary="Gallery" icon={<DashboardIcon />} />
+    <ListItemLink1 to="/app/category" primary="Category" icon={<BarChartIcon />} />
   </div>
 );
