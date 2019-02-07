@@ -71,7 +71,6 @@ class NotificationBar extends Component {
     const { classes, className, messages, variant, showMessages } = this.props;
     const Icon = variantIcon[variant];
 
-    console.log(messages, variant, showMessages)
 
     if (!showMessages) {
       return <div id="messageBar" />;
