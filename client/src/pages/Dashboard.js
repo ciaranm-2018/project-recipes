@@ -7,18 +7,17 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {mainListItems} from './listItems';
 import { Switch, Route } from 'react-router-dom'
 import Category from './Category';
 import Gallery from './Gallery';
-
+import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -59,6 +58,9 @@ const styles = theme => ({
   },
   title: {
     flexGrow: 1,
+  },
+  username: {
+    marginRight: '10px',
   },
   drawerPaper: {
     position: 'relative',
@@ -101,6 +103,7 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state = {
     open: false,
+    logout:false
   };
 
   handleDrawerOpen = () => {
@@ -113,6 +116,13 @@ class Dashboard extends React.Component {
 
   render () {
     const {classes} = this.props;
+
+    const username = sessionStorage.getItem("username");
+
+    if (this.state.logout) {
+      return <Redirect to={'/'} />;
+    }
+
 
     return (
       <div className={classes.root}>
@@ -148,11 +158,28 @@ class Dashboard extends React.Component {
             >
               Cooking Recipes
             </Typography>
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
+            <Typography
+              variant="subtitle1"
+              color="inherit"
+              noWrap
+              className={classes.username}
+            >
+            {username}
+            </Typography>
+           
+            <Button
+     
+              variant="contained" 
+              color="primary"
+              className={classes.loginButton}
+              onClick={() => {
+                this.setState({logout:true})
+                sessionStorage.clear();
+              }}
+              id="loginButton"
+            >
+              Logout
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -176,9 +203,9 @@ class Dashboard extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Switch>
-            <Route path="/gallery" component={Gallery} />
-            <Route path="/category" component={Category} />
-            <Route exact path="/" component={Gallery} />
+            <Route path="/app/gallery" component={Gallery} />
+            <Route path="/app/category" component={Category} />
+            <Route exact path="/app" component={Gallery} />
           </Switch>
 
         </main>

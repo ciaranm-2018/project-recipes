@@ -11,9 +11,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Loader from '../components/Loader';
 import NotificationBar from '../components/NotificationBar';
 import CustomizedInputBase from '../components/CustomizedInputBase';
-
-//
 import axios from 'axios';
+
+const baseURL = 'https://project-recipes-ciaranm.c9users.io:8081';
 
 const styles = {
   root: {
@@ -68,7 +68,7 @@ class Gallery extends Component {
         notification: {showMessages: false},
       });
       axios
-        .post ('https://project-recipes-ciaranm.c9users.io:8081/api/recepies', this.state.data)
+        .post (`${baseURL}/api/recepies`, this.state.data)
         .then (response => {
           this.setState ({
             addNewRecipeOpen: false,
@@ -106,9 +106,8 @@ class Gallery extends Component {
         notification: {showMessages: false},
       });
       axios
-        .post ('https://project-recipes-ciaranm.c9users.io:8081/api/recepe/', this.state.data)
+        .post (`${baseURL}/api/recepe/`, this.state.data)
         .then (response => {
-          console.log (response);
           this.setState ({
             addNewRecipeOpen: false,
             galleryLoading: false,
@@ -119,6 +118,8 @@ class Gallery extends Component {
             },
           });
           this.getRecipes ();
+          this.getCountryMap ();
+          this.getMealTypeMap ();
           setTimeout (this.hidenotification, 5000);
         })
         .catch (error => {
@@ -161,7 +162,7 @@ class Gallery extends Component {
   handleViewRecipeClose = () => {
     this.setState ({viewRecipeOpen: false, error: {}});
   };
-
+  //
   handleOpen = data => {
     this.setState ({
       addNewRecipeOpen: true,
@@ -176,7 +177,10 @@ class Gallery extends Component {
         recipeName: '',
         totalTime: '',
         yield: '',
+        mealType: '',
+        country: '',
         ...data,
+        username: sessionStorage.getItem ('username'),
       },
     });
   };
@@ -192,9 +196,8 @@ class Gallery extends Component {
 
     this.setState ({galleryLoading: true});
     axios
-      .get (`https://project-recipes-ciaranm.c9users.io:8081/api/recepe/${id}`)
+      .get (`${baseURL}/api/recepe/${id}`)
       .then (response => {
-        console.log (response.data);
         this.setState ({
           viewRecipeOpen: true,
           galleryLoading: false,
@@ -223,7 +226,7 @@ class Gallery extends Component {
       notification: {showMessages: false},
     });
     axios
-      .delete (`https://project-recipes-ciaranm.c9users.io:8081/api/recepe/${id}`)
+      .delete (`${baseURL}/api/recepe/${id}`)
       .then (response => {
         this.setState ({
           galleryLoading: false,
@@ -249,12 +252,8 @@ class Gallery extends Component {
       notification: {showMessages: false},
     });
 
-    if (!data) {
-      data = '-';
-    }
-
     axios
-      .get (`https://project-recipes-ciaranm.c9users.io:8081/api/recepe/search/${data}`)
+      .post (`${baseURL}/api/multi/search/`, data)
       .then (response => {
         if (response.data.length === 0) {
           this.setState ({
@@ -279,9 +278,8 @@ class Gallery extends Component {
       galleryLoading: true,
     });
     axios
-      .get ('https://project-recipes-ciaranm.c9users.io:8081/api/recepies')
+      .get (`${baseURL}/api/recepies`)
       .then (response => {
-        console.log (response.data);
         this.setState ({recipes: response.data, galleryLoading: false});
       })
       .catch (error => {
@@ -293,7 +291,51 @@ class Gallery extends Component {
             showMessages: true,
           },
         });
-        console.log (error);
+        setTimeout (this.hidenotification, 5000);
+      });
+  };
+
+  getCountryMap = () => {
+    this.setState ({
+      galleryLoading: true,
+    });
+    axios
+      .get (`${baseURL}/api/country/map/`)
+      .then (response => {
+        this.setState ({countryMap: response.data, galleryLoading: false});
+      })
+      .catch (error => {
+        this.setState ({
+          galleryLoading: false,
+          notification: {
+            messages: ['something went wrong please try again'],
+            variant: 'error',
+            showMessages: true,
+          },
+        });
+        setTimeout (this.hidenotification, 5000);
+      });
+  };
+
+  getMealTypeMap = () => {
+    this.setState ({
+      galleryLoading: true,
+    });
+    axios
+      .get (`${baseURL}/api/mealtype/map/`)
+      .then (response => {
+        this.setState ({mealTypeMap: response.data, galleryLoading: false});
+      })
+      .catch (error => {
+        this.setState ({
+          galleryLoading: false,
+          notification: {
+            messages: ['something went wrong please try again'],
+            variant: 'error',
+            showMessages: true,
+          },
+        });
+
         setTimeout (this.hidenotification, 5000);
       });
   };
@@ -303,28 +345,27 @@ class Gallery extends Component {
   };
 
   handleRecipeVote = (data, id) => {
-    console.log (data, id);
     // local update view count
     const clonedRecipes = JSON.parse (JSON.stringify (this.state.recipes));
     clonedRecipes.forEach (recipe => {
       if (recipe.id === id) {
-        if (data == 'upVotes') {
+        if (data === 'upVotes') {
           recipe.matrics.upVotes += 1;
         } else {
           recipe.matrics.downVotes += 1;
         }
       }
     });
-    this.setState ({recipes:clonedRecipes });
+    this.setState ({recipes: clonedRecipes});
 
     axios
-    .post ('https://project-recipes-ciaranm.c9users.io:8081/api/recepe/vote', {id,action:data})
-    .then (response => {
-      console.log (response.data);
-    })
-    .catch (error => {
-      console.log (error);
-    });
+      .post (`${baseURL}/api/recepe/vote`, {id, action: data})
+      .then (response => {
+        console.log (response.data);
+      })
+      .catch (error => {
+        console.log (error);
+      });
   };
 
   handleReset = () => {
@@ -334,6 +375,8 @@ class Gallery extends Component {
 
   componentDidMount () {
     this.getRecipes ();
+    this.getCountryMap ();
+    this.getMealTypeMap ();
   }
 
   render () {
@@ -353,6 +396,8 @@ class Gallery extends Component {
           <CustomizedInputBase
             handleChangeBasicSearch={this.handleChangeBasicSearch}
             handleReset={this.handleReset}
+            mealTypeMap={this.state.mealTypeMap}
+            countryMap={this.state.countryMap}
           />
           <Tooltip
             style={{marginLeft: 20}}
