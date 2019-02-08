@@ -136,6 +136,14 @@ function ViewRecipeDialog (props) {
                 {data.mealType}
               </Typography>
             </Grid>
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">
+                Image name
+              </Typography>
+              <Typography variant="subtitle1">
+                {data.imageName}
+              </Typography>
+            </Grid>
           </Grid>
 
         </DialogContent>

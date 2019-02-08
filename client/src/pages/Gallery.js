@@ -179,6 +179,7 @@ class Gallery extends Component {
         yield: '',
         mealType: '',
         country: '',
+        imageName:'',
         ...data,
         username: sessionStorage.getItem ('username'),
       },

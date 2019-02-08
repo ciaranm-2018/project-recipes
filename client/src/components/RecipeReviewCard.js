@@ -42,7 +42,7 @@ function MediaCard (props) {
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image={Pic}
+            image= {require(`../images/${props.imageName}`)}
             title="Contemplative Reptile"
           />
           <CardContent>

@@ -195,6 +195,20 @@ function FormDialog (props) {
                   </MenuItem>
                 ))}
               </TextField>
+              
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                error={props.error.imageName}
+                margin="dense"
+                variant="outlined"
+                id="imageName"
+                label="Image Name"
+                type="text"
+                fullWidth
+                value={props.data.imageName}
+                onChange={props.handleChange ('imageName')}
+              />
 
             </Grid>
           </Grid>
