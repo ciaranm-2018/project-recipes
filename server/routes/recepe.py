@@ -21,7 +21,7 @@ def initialize():
     data = {
         "totalTime" : "10min","description" : "traditional meal","ingredients" : "beans dahl","calories" : "100","yield" : "5",
         "fat" : "200","cookTime" : "30min","recipeName" : "irish","prepTime" : "20min","instructions" : "start the cooking","inserted_date":datetime.datetime.utcnow(),
-        "metrics" : {"views":0,"upVotes":0,"downVotes":0}, "country":"ireland","mealType":"supper"
+        "metrics" : {"views":0,"upVotes":0,"downVotes":0}, "country":"ireland","mealType":"supper","imageName":"1.jpg"
     }
 
     recipe.insert(data)
@@ -39,6 +39,7 @@ def getAllRecepes():
             json_data["id"] = str(i["_id"])
             json_data["recipeName"] = i["recipeName"]
             json_data["description"] =i["description"]
+            json_data["imageName"] =i["imageName"]
 
             now  = datetime.datetime.utcnow()# Now
             duration = now - i["inserted_date"]
@@ -96,6 +97,7 @@ def getRecepe(recepe_id):
             json_data["instructions"] = data["instructions"]
             json_data["country"] =data["country"]
             json_data["mealType"] =data["mealType"]
+            json_data["imageName"] =data["imageName"]
 
             db.recipe.update(
                 {"_id":ObjectId(recepe_id)},
@@ -139,6 +141,8 @@ def updateRecepe():
             data["instructions"] = req_data["instructions"]
             data["country"] =req_data["country"]
             data["mealType"] =req_data["mealType"] 
+            data["imageName"] =req_data["imageName"]
+            
 
             insertedrecod = db.recipe.save(data)
             json_data = {}
@@ -192,6 +196,8 @@ def searchByName(name):
                 json_data["id"] = str(i["_id"])
                 json_data["recipeName"] = i["recipeName"]
                 json_data["description"] =i["description"]
+                json_data["imageName"] =i["imageName"]
+                
 
                 now  = datetime.datetime.utcnow()# Now
                 duration = now - i["inserted_date"]

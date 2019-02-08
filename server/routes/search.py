@@ -37,6 +37,7 @@ def multiSearch():
                 json_data["id"] = str(i["_id"])
                 json_data["recipeName"] = i["recipeName"]
                 json_data["description"] =i["description"]
+                json_data["imageName"] =i["imageName"]
                 
                 now  = datetime.datetime.utcnow()# Now
                 duration = now - i["inserted_date"]
