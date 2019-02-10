@@ -13,7 +13,7 @@ import NotificationBar from '../components/NotificationBar';
 import CustomizedInputBase from '../components/CustomizedInputBase';
 import axios from 'axios';
 
-const baseURL = 'https://project-recipes-ciaranm.c9users.io:8081';
+const baseURL = 'http://project-recipes-git-ciaranm.c9users.io:8080';
 
 const styles = {
   root: {
