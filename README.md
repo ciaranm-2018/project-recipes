@@ -11,6 +11,12 @@
 * [axios](https://www.npmjs.com/package/axios) - The project uses axios for  Make XMLHttpRequests from the browser
 * [Flask](http://flask.pocoo.org/) - Flask is a microframework for Python the project uses to implement backend APIs
 
+## Testing
+Basic test cases are in the app_test.py.To run test cases run following command 
+```sh
+> cd server
+> python app_tests.py
+```
 
 ## How to run code locally.
 ## How to run client ( front-end )
