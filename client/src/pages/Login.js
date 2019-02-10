@@ -100,7 +100,7 @@ class Dashboard extends React.Component {
             variant="subtitle1"
             gutterBottom
           >
-            Cooking Recipes <br />
+            Ciaran's Recipes <br />
           </Typography>
 
         </Grid>

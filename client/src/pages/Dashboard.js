@@ -156,7 +156,7 @@ class Dashboard extends React.Component {
               noWrap
               className={classes.title}
             >
-              Cooking Recipes
+              Ciaran's Recipes
             </Typography>
             <Typography
               variant="subtitle1"
